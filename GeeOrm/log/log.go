@@ -14,7 +14,7 @@ var (
 	mu       sync.Mutex
 )
 
-// log methods
+// log methods test
 var (
 	Error  = errorLog.Println
 	Errorf = errorLog.Printf
