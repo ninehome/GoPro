@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
+var TestDial, _ = dialect.GetDialect("sqlite3")
+
 type User struct {
 	Name string `geeorm:"PRIMARY KEY"`
 	Age  int
 }
-
-var TestDial, _ = dialect.GetDialect("sqlite3")
 
 func TestParse(t *testing.T) {
 	schema := Parse(&User{}, TestDial)
