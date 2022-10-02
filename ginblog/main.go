@@ -1,14 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"ginblog/routes"
+	"ginblog/utils"
 )
 
 func main() {
-
-}
-
-func initGin() {
-	gin := gin.New()
-
+	engin := routes.InitRouter()
+	engin.Run(utils.HttpPort)
 }

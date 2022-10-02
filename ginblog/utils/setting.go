@@ -22,10 +22,12 @@ var key_server = "server"
 // 读取配置文件
 func init() {
 	//初始GoINI对象
-	file, error := ini.Load("../config/config.ini")
+	file, error := ini.Load("config/config.ini")
 	if error != nil {
 		fmt.Println("配置文件错误：", error)
 	}
+
+	//初始化配置参数
 	loadServer(file)
 	loadData(file)
 }
