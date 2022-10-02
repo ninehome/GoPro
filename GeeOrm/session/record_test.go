@@ -2,12 +2,7 @@ package session
 
 import "GeeOrm/schema"
 
-var x = schema.User{Name: "", Age: 20}
-
-//
-//var user1 = &User{"Tom", 18}
-//var user2 = &User{"Sam", 25}
-//var user3 = &User{"Jack", 25}
+var s = schema.Schema{}
 
 //
 //func testRecordInit(t *testing.T) *Session {
