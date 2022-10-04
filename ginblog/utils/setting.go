@@ -29,7 +29,7 @@ func init() {
 
 	//初始化配置参数
 	loadServer(file)
-	loadData(file)
+	loadData(file, 0) //0 -> work 1->home
 }
 
 func loadServer(file *ini.File) {
@@ -38,12 +38,23 @@ func loadServer(file *ini.File) {
 	HttpPort = Section.Key("HttpPort").MustString(":3000")
 }
 
-func loadData(file *ini.File) {
+func loadData(file *ini.File, plat int) {
 	var Section = file.Section(key_db)
-	Db = Section.Key("Db").MustString("test")
-	DbHost = Section.Key("DbHost").MustString("localhost")
-	DbPort = Section.Key("DbPort").MustString("3306")
-	DbUser = Section.Key("DbUser").MustString("ginblog")
-	DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
-	DbName = Section.Key("DbName").MustString("ginblog")
+	if plat == 1 {
+		Db = Section.Key("Db").MustString("test")
+		DbHost = Section.Key("DbHost").MustString("localhost")
+		DbPort = Section.Key("DbPort").MustString("3306")
+		DbUser = Section.Key("DbUser").MustString("ginblog")
+		DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
+		DbName = Section.Key("DbName").MustString("ginblog")
+	} else {
+		var Section = file.Section(key_db)
+		Db = Section.Key("Db").MustString("gee")
+		DbHost = Section.Key("DbHost").MustString("localhost")
+		DbPort = Section.Key("DbPort").MustString("3306")
+		DbUser = Section.Key("DbUser").MustString("root")
+		DbPassWord = Section.Key("DbPassWord").MustString("stan183183")
+		DbName = Section.Key("DbName").MustString("ginblog")
+	}
+
 }
