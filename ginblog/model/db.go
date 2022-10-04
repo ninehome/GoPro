@@ -33,8 +33,8 @@ func InitDB() {
 		fmt.Println("链接数据库成功。。。")
 	}
 
-	db.SingularTable(true)                           //建表 不加s ,比如模型是user - >users
-	db.AutoMigrate(&Aritcel{}, &User{}, &Category{}) //关联模型
+	db.SingularTable(true)                                       //建表 不加s ,比如模型是user - >users
+	db.AutoMigrate(&Aritcel{}, &User{}, &Category{}, &Comment{}) //关联模型
 	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
 	db.DB().SetMaxIdleConns(10)
 

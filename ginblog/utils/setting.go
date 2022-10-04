@@ -19,31 +19,57 @@ var (
 var key_db = "database"
 var key_server = "server"
 
-// 读取配置文件
+const load_HOME = "HOME"
+const load_WORK = "WORK"
+
+var file *ini.File
+var er error
+
+// 初始化 读取配置
 func init() {
-	//初始GoINI对象
-	file, error := ini.Load("config/config.ini")
-	if error != nil {
-		fmt.Println("配置文件错误：", error)
+
+	starInit(load_WORK)
+	//starInit(load_HOME)
+}
+
+func starInit(plat string) {
+	if plat == "WORK" {
+		file, er = ini.Load("config/configWork.ini")
+	} else {
+		file, er = ini.Load("config/config.ini")
+	}
+
+	if er != nil {
+		fmt.Println("配置文件错误：", er)
 	}
 
 	//初始化配置参数
-	loadServer(file)
-	loadData(file)
+	loadData(file, plat)
 }
 
-func loadServer(file *ini.File) {
-	var Section = file.Section(key_server)
+func loadData(file *ini.File, plat string) {
+
+	var Section = file.Section(key_db)
+	//公共参数
 	AppMode = Section.Key("AppMode").MustString("debug")
 	HttpPort = Section.Key("HttpPort").MustString(":3000")
-}
 
-func loadData(file *ini.File) {
-	var Section = file.Section(key_db)
-	Db = Section.Key("Db").MustString("test")
-	DbHost = Section.Key("DbHost").MustString("localhost")
-	DbPort = Section.Key("DbPort").MustString("3306")
-	DbUser = Section.Key("DbUser").MustString("ginblog")
-	DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
-	DbName = Section.Key("DbName").MustString("ginblog")
+	//数据库参数
+	if plat == "HOME" {
+		Db = Section.Key("Db").MustString("test")
+		DbHost = Section.Key("DbHost").MustString("localhost")
+		DbPort = Section.Key("DbPort").MustString("3306")
+		DbUser = Section.Key("DbUser").MustString("nine")
+		DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
+		DbName = Section.Key("DbName").MustString("ginblog")
+	} else {
+		var Section = file.Section(key_db)
+		Db = Section.Key("Db").MustString("gee")
+		DbHost = Section.Key("DbHost").MustString("localhost")
+		DbPort = Section.Key("DbPort").MustString("3306")
+		DbUser = Section.Key("DbUser").MustString("root")
+		DbPassWord = Section.Key("DbPassWord").MustString("stan183183")
+		DbName = Section.Key("DbName").MustString("ginblog")
+	}
+
 }
