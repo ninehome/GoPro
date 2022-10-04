@@ -19,32 +19,34 @@ var (
 var key_db = "database"
 var key_server = "server"
 
+const load_HOME = "HOME"
+const load_WORK = "WORK"
+
 // 读取配置文件
 func init() {
-	//初始GoINI对象
-	file, error := ini.Load("config/config.ini")
+	//file, error := ini.Load("config/config.ini")
+	file, error := ini.Load("config/configWork.ini")
 	if error != nil {
 		fmt.Println("配置文件错误：", error)
 	}
 
 	//初始化配置参数
-	loadServer(file)
-	loadData(file, 0) //0 -> work 1->home
+	loadData(file, load_WORK)
 }
 
-func loadServer(file *ini.File) {
-	var Section = file.Section(key_server)
+func loadData(file *ini.File, plat string) {
+
+	var Section = file.Section(key_db)
+	//公共参数
 	AppMode = Section.Key("AppMode").MustString("debug")
 	HttpPort = Section.Key("HttpPort").MustString(":3000")
-}
 
-func loadData(file *ini.File, plat int) {
-	var Section = file.Section(key_db)
-	if plat == 1 {
+	//数据库参数
+	if plat == "HOME" {
 		Db = Section.Key("Db").MustString("test")
 		DbHost = Section.Key("DbHost").MustString("localhost")
 		DbPort = Section.Key("DbPort").MustString("3306")
-		DbUser = Section.Key("DbUser").MustString("ginblog")
+		DbUser = Section.Key("DbUser").MustString("nine")
 		DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
 		DbName = Section.Key("DbName").MustString("ginblog")
 	} else {
