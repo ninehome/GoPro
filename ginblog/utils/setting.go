@@ -29,6 +29,7 @@ var er error
 func init() {
 
 	starInit(load_WORK)
+	//starInit(load_HOME)
 }
 
 func starInit(plat string) {
