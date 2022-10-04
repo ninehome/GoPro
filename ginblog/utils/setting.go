@@ -22,16 +22,28 @@ var key_server = "server"
 const load_HOME = "HOME"
 const load_WORK = "WORK"
 
-// 读取配置文件
+var file *ini.File
+var er error
+
+// 初始化 读取配置
 func init() {
-	//file, error := ini.Load("config/config.ini")
-	file, error := ini.Load("config/configWork.ini")
-	if error != nil {
-		fmt.Println("配置文件错误：", error)
+
+	starInit(load_WORK)
+}
+
+func starInit(plat string) {
+	if plat == "WORK" {
+		file, er = ini.Load("config/configWork.ini")
+	} else {
+		file, er = ini.Load("config/config.ini")
+	}
+
+	if er != nil {
+		fmt.Println("配置文件错误：", er)
 	}
 
 	//初始化配置参数
-	loadData(file, load_WORK)
+	loadData(file, plat)
 }
 
 func loadData(file *ini.File, plat string) {
