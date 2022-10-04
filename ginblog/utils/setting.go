@@ -47,3 +47,12 @@ func loadData(file *ini.File) {
 	DbPassWord = Section.Key("DbPassWord").MustString("123qwe")
 	DbName = Section.Key("DbName").MustString("ginblog")
 }
+func loadDataWork(file *ini.File) {
+	var Section = file.Section(key_db)
+	Db = Section.Key("Db").MustString("gee")
+	DbHost = Section.Key("DbHost").MustString("localhost")
+	DbPort = Section.Key("DbPort").MustString("3306")
+	DbUser = Section.Key("DbUser").MustString("root")
+	DbPassWord = Section.Key("DbPassWord").MustString("stan183183")
+	DbName = Section.Key("DbName").MustString("ginblog")
+}
