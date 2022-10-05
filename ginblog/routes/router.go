@@ -14,6 +14,7 @@ func InitRouter() *gin.Engine {
 	{
 		//user模块接口
 		router.POST("user/add", v1.AddUser)
+		router.POST("user/login", v1.UserLogin)
 		router.POST("user/users", v1.GetUserList)
 		router.PUT("user/:id", v1.EditUser)
 		router.DELETE("user/:id", v1.DeleteUser)

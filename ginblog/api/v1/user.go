@@ -39,7 +39,32 @@ func AddUser(ctx *gin.Context) {
 	})
 }
 
-//查询单个用户
+//查询单个用户 /登录
+
+func UserLogin(ctx *gin.Context) {
+	var data model.User
+	err := ctx.ShouldBindJSON(&data)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	code := model.LoginUser(data.Username, data.Password)
+	//if code == errormsg.SUCCESS {
+	//
+	//}
+
+	if code == errormsg.ERROR_USERNAME_USED {
+		code = errormsg.ERROR_USERNAME_USED
+	}
+
+	//返回http json 数据
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"message": errormsg.GetErrorMsg(code),
+	})
+}
 
 // 查询用户列表
 func GetUserList(ctx *gin.Context) {

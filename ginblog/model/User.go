@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// 登录用户
 type User struct {
 	gorm.Model
 
@@ -37,6 +36,27 @@ func CheckUser(name string) int {
 		return errormsg.ERROR_USERNAME_USED //已经存在 不可用
 	}
 	return errormsg.SUCCESS
+}
+
+func LoginUser(name string, password string) int {
+	var user User
+
+	code := CheckUser(name)
+
+	if code == errormsg.ERROR_USERNAME_USED {
+		fmt.Println("传入的用户名 和密码 -->", name, password)
+		//查询 并且绑定到 users ,通过判断users的值 来判断是否查到记录
+		//db.Where("username = ? ", name).First(&user)
+		db.Where(&User{Username: name, Password: password}).First(&user)
+		if user.ID > 0 {
+			return errormsg.SUCCESS //
+		}
+		return errormsg.SUCCESS
+
+	} else {
+		return errormsg.ERROR_PASSWOR_WRONG
+	}
+
 }
 
 // 新增/注册用户 返回code
