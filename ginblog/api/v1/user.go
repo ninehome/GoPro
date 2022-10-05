@@ -6,6 +6,7 @@ import (
 	"ginblog/utils/errormsg"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 // 查询用户是否 存在
@@ -69,6 +70,26 @@ func UserLogin(ctx *gin.Context) {
 // 查询用户列表
 func GetUserList(ctx *gin.Context) {
 
+	page, _ := strconv.Atoi(ctx.Query("page"))
+	PageSize, _ := strconv.Atoi(ctx.Query("pagesize"))
+
+	if PageSize == 0 {
+		PageSize = -1 //当等于-1 就是取消 limit 条件，不需要分页
+	}
+
+	if page == 0 {
+		page = 1
+	}
+
+	data := model.GetUserList(page, PageSize)
+	code := errormsg.SUCCESS
+
+	ctx.JSON(http.StatusOK, gin.H{
+
+		"status":  code,
+		"data":    data,
+		"message": errormsg.GetErrorMsg(code),
+	})
 }
 
 // 编辑用户

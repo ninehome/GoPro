@@ -19,11 +19,11 @@ type User struct {
 
 }
 
-// {
-// "username":"noe",
-// "password":"123qwe",
-// "role":2
-// }
+//{
+//"username":"noe",
+//"password":"123qwe",
+//"role":2
+//}
 
 // 查询用户是否存在
 func CheckUser(name string) int {
@@ -68,4 +68,16 @@ func CreateUser(data *User) int {
 	}
 	return errormsg.SUCCESS //200
 
+}
+
+//查询用户列表
+
+func GetUserList(page int, pagesize int) []User {
+	var ulist []User
+	err := db.Limit(pagesize).Offset((page - 1) * pagesize).Find(&ulist).Error
+	if err != nil || err == gorm.ErrRecordNotFound { //查询错误 和没记录 都返回nil
+		return nil
+	}
+
+	return ulist
 }
