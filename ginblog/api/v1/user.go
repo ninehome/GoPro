@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"ginblog/model"
 	"ginblog/utils/errormsg"
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,12 @@ func UserExist(ctx *gin.Context) {
 // 添加用户
 func AddUser(ctx *gin.Context) {
 	var data model.User
-	_ = ctx.ShouldBindJSON(&data)
+	err := ctx.ShouldBindJSON(&data)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	code := model.CheckUser(data.Username)
 	if code == errormsg.SUCCESS {
 		model.CreateUser(&data) //写入数据库
