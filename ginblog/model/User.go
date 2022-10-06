@@ -1,8 +1,12 @@
 package model
 
 import (
+	"crypto/md5"
+	"encoding/base64"
 	"fmt"
 	"ginblog/utils/errormsg"
+	"io"
+
 	//"github.com/jinzhu/gorm"
 	"gorm.io/gorm"
 )
@@ -13,6 +17,8 @@ type User struct {
 	Username string `gorm:"type:varchar(20);not null " json:"username" validate:"required,min=4,max=12" label:"用户名"`
 	Password string `gorm:"type:varchar(500);not null" json:"password" validate:"required,min=6,max=120" label:"密码"`
 	Role     int    `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"角色码"`
+	Nickname string `gorm:"type:varchar(12)" json:"nickname" validate:"required,min=3,max=12" label:"昵称"`
+	SEX      string `gorm:"type:varchar(6)" json:"sex" validate:"required,min=1,max=6" label:"昵称"`
 	//Username string `gorm:"type:varchar(20);not null" json:"username"`
 	//Password string `gorm:"type:varchar(20);not null" json:"password"`
 	//Role     int    `gorm:"type:int" json:"role"` //用户角色
@@ -38,9 +44,9 @@ func CheckUser(name string) int {
 	return errormsg.SUCCESS
 }
 
-func LoginUser(name string, password string) int {
+func LoginUser(name string, password string) (int, *User) {
 	var user User
-
+	password = strToMD5(password)
 	code := CheckUser(name)
 
 	if code == errormsg.ERROR_USERNAME_USED {
@@ -49,24 +55,25 @@ func LoginUser(name string, password string) int {
 		//db.Where("username = ? ", name).First(&user)
 		db.Where(&User{Username: name, Password: password}).First(&user)
 		if user.ID > 0 {
-			return errormsg.SUCCESS //
+			return errormsg.SUCCESS, &user //
 		}
-		return errormsg.SUCCESS
+		return errormsg.ERROR_PASSWOR_WRONG, nil
 
 	} else {
-		return errormsg.ERROR_PASSWOR_WRONG
+		return errormsg.ERROR_USER_NOT_EXIST, nil
 	}
 
 }
 
 // 新增/注册用户 返回code
-func CreateUser(data *User) int {
+func CreateUser(data *User) (int, error) {
+	data.Password = strToMD5(data.Password)
 	//插入记录
 	err := db.Create(&data).Error
 	if err != nil {
-		return errormsg.ERROR //500
+		return errormsg.ERROR, err //500
 	}
-	return errormsg.SUCCESS //200
+	return errormsg.SUCCESS, nil //200
 
 }
 
@@ -80,4 +87,18 @@ func GetUserList(page int, pagesize int) []User {
 	}
 
 	return ulist
+}
+
+func EditeNickname(nickname string, username string) (int, error) {
+	err := db.Model(&User{}).Where("username = ?", username).Update("nickname", nickname).Error
+	if err != nil {
+		return errormsg.ERROR, err
+	}
+	return errormsg.SUCCESS, nil
+}
+
+func strToMD5(str string) string {
+	h := md5.New()
+	io.WriteString(h, str)
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
