@@ -9,7 +9,8 @@ import (
 func InitRouter() *gin.Engine {
 	gin.SetMode(utils.AppMode)
 	r := gin.Default()
-
+	//r := gin.New()
+	r.Use(gin.Recovery())
 	router := r.Group("api/v1")
 	{
 		//user模块接口

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"ginblog/utils/errormsg"
+	"golang.org/x/crypto/bcrypt"
 	"io"
 
 	//"github.com/jinzhu/gorm"
@@ -69,12 +70,21 @@ func LoginUser(name string, password string) (int, *User) {
 func CreateUser(data *User) (int, error) {
 	data.Password = strToMD5(data.Password)
 	//插入记录
+	fmt.Println("Create 1111111111111111")
 	err := db.Create(&data).Error
+	fmt.Println("Create 22222222222222222")
 	if err != nil {
 		return errormsg.ERROR, err //500
 	}
 	return errormsg.SUCCESS, nil //200
 
+}
+
+//gorm 钩子函数
+
+func (u *User) BeforeCreate(*gorm.DB) error {
+	fmt.Println("我是 db 调用create 之前会 回调的钩子函数")
+	return nil
 }
 
 //查询用户列表
@@ -97,8 +107,32 @@ func EditeNickname(nickname string, username string) (int, error) {
 	return errormsg.SUCCESS, nil
 }
 
+// 密码加密方式1
 func strToMD5(str string) string {
 	h := md5.New()
 	io.WriteString(h, str)
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
+
+//密码加密方式2  bcrypt
+
+// 需要将第一次生成的hash 存入数据库，用来比较 之后的输入值
+func HashAndSalt(pwd []byte) string {
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	if err != nil {
+
+	}
+	return string(hash)
+}
+
+// 验证
+func ValidatePasswords(hashedPwd string, plainPwd []byte) bool {
+	byteHash := []byte(hashedPwd)
+	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+//密码加密方式3 scrypt
