@@ -25,7 +25,11 @@ func AddUser(ctx *gin.Context) {
 
 	code := model.CheckUser(data.Username)
 	if code == errormsg.SUCCESS {
-		model.CreateUser(&data) //写入数据库
+		ecode, e := model.CreateUser(&data) //写入数据库
+		if e != nil {
+			code = ecode
+			panic(e)
+		}
 	}
 
 	if code == errormsg.ERROR_USERNAME_USED {
@@ -43,21 +47,14 @@ func AddUser(ctx *gin.Context) {
 //查询单个用户 /登录
 
 func UserLogin(ctx *gin.Context) {
-	var data model.User
+	var data *model.User
 	err := ctx.ShouldBindJSON(&data)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	code := model.LoginUser(data.Username, data.Password)
-	//if code == errormsg.SUCCESS {
-	//
-	//}
-
-	if code == errormsg.ERROR_USERNAME_USED {
-		code = errormsg.ERROR_USERNAME_USED
-	}
+	code, data := model.LoginUser(data.Username, data.Password)
 
 	//返回http json 数据
 	ctx.JSON(http.StatusOK, gin.H{
@@ -65,6 +62,7 @@ func UserLogin(ctx *gin.Context) {
 		"data":    data,
 		"message": errormsg.GetErrorMsg(code),
 	})
+
 }
 
 // 查询用户列表
@@ -94,7 +92,26 @@ func GetUserList(ctx *gin.Context) {
 
 // 编辑用户
 func EditUser(ctx *gin.Context) {
+	nickname := ctx.Query("nickname")
+	userName := ctx.Query("username")
+	code := errormsg.ERROR_PARAMS
+	if nickname == "" || userName == "" {
+		ctx.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"message": errormsg.GetErrorMsg(code),
+		})
+		return
+	}
 
+	code, err := model.EditeNickname(nickname, userName)
+	if code == errormsg.ERROR {
+		panic(err)
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errormsg.GetErrorMsg(code),
+	})
 }
 
 //删除用户
