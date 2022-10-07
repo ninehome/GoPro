@@ -8,6 +8,14 @@
 "role":2
 }
 
+{
+"username":"noe",
+"password":"123qwe",
+"role":2,
+"nickname":"大鱼"
+}
+
+
 
 //查询用户
 {
