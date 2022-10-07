@@ -1,0 +1,17 @@
+
+
+//增加用户
+
+{
+"username":"noe",
+"password":"123qwe",
+"role":2
+}
+
+
+//查询用户
+{
+"page":"1",
+"pagesize":"3",
+
+}
