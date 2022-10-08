@@ -2,15 +2,26 @@ package routes
 
 import (
 	v1 "ginblog/api/v1"
+	"ginblog/middleware"
 	"ginblog/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
 	gin.SetMode(utils.AppMode)
-	r := gin.Default()
-	//r := gin.New()
+
+	/**func Default() *Engine {
+		debugPrintWARNINGDefault()
+		engine := New()
+		engine.Use(Logger(), Recovery())
+		return engine
+	}
+
+	*/
+	//r := gin.Default()  //这个初始化包含了 gin 默认日志中间件
+	r := gin.New()
 	r.Use(gin.Recovery())
+	r.Use(middleware.LoggerToFile())
 	router := r.Group("api/v1")
 	{
 		//user模块接口

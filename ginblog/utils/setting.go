@@ -15,6 +15,9 @@ var (
 	DbUser     string
 	DbPassWord string
 	DbName     string
+
+	LogName string
+	LogFile string
 )
 var key_db = "database"
 var key_server = "server"
@@ -28,8 +31,8 @@ var er error
 // 初始化 读取配置
 func init() {
 	fmt.Println("读取ini配置文件：")
-	//starInit(load_WORK)
-	starInit(load_HOME)
+	starInit(load_WORK)
+	//starInit(load_HOME)
 }
 
 func starInit(plat string) {
@@ -53,6 +56,9 @@ func loadData(file *ini.File, plat string) {
 	//公共参数
 	AppMode = Section.Key("AppMode").MustString("debug")
 	HttpPort = Section.Key("HttpPort").MustString(":3000")
+
+	LogName = Section.Key("LogFileName").MustString("logger")
+	LogFile = Section.Key("LogFilePath").MustString("./log")
 
 	//数据库参数
 	if plat == "HOME" {
