@@ -20,8 +20,9 @@ func InitRouter() *gin.Engine {
 	*/
 	//r := gin.Default()  //这个初始化包含了 gin 默认日志中间件
 	r := gin.New()
+	r.Use(middleware.Logger()) //自己日志中间件
 	r.Use(gin.Recovery())
-	r.Use(middleware.LoggerToFile())
+
 	router := r.Group("api/v1")
 	{
 		//user模块接口

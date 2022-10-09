@@ -1,0 +1,1 @@
+time="2022-10-09 12:57:49" level=info hostName=DESKTOP-BPPN2DN ip="::1" method=GET path="/api/v1/user/users?page=0&pagesize=10" spendTime="19 ms" status=200 userAgent=PostmanRuntime/7.29.2

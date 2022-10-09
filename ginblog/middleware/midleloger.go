@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"ginblog/utils"
 	"github.com/gin-gonic/gin"
+	retalog "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
+	"math"
 	"os"
 	"path"
 	"time"
@@ -72,6 +75,107 @@ func LoggerToFile() gin.HandlerFunc {
 			reqMethod,
 			reqUri,
 		)
+	}
+}
+
+func Logger() gin.HandlerFunc {
+	logFilePath := utils.LogFile
+	logFileName := utils.LogName
+
+	fmt.Println("path = ", path.Join(logFilePath, logFileName))
+
+	//日志文件
+	fileName := "log/log" //path.Join(logFilePath, logFileName)
+	linkFile := "link.log"
+
+	//写入文件
+	//src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)  //os.ModeAppend
+
+	src, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0755) //os.ModeAppend
+	if err != nil {
+		fmt.Println("err", err)
+	}
+
+	log := logrus.New()
+	//设置输出
+	log.Out = src
+
+	log.SetLevel(logrus.DebugLevel)
+	//日志分割
+
+	writer, _ := retalog.New(
+		fileName+"_%Y%m%d.log",
+		//生成软链 指向最新日志文件
+		retalog.WithLinkName(linkFile),
+		//最大保存时间
+		retalog.WithMaxAge(7*24*time.Hour),
+		//日志切割时间
+		retalog.WithRotationTime(24*time.Hour),
+	)
+
+	writeMap := lfshook.WriterMap{
+		logrus.InfoLevel:  writer,
+		logrus.FatalLevel: writer,
+		logrus.DebugLevel: writer,
+		logrus.WarnLevel:  writer,
+		logrus.ErrorLevel: writer,
+		logrus.PanicLevel: writer,
+		logrus.TraceLevel: writer,
+	}
+
+	//加入HooK
+	hook := lfshook.NewHook(writeMap, &logrus.TextFormatter{
+		TimestampFormat: "2006-01-02 15:04:05", //时间一定要是这个，否则无法Hook
+	})
+
+	//加入hook
+	log.AddHook(hook)
+
+	return func(c *gin.Context) {
+		startTime := time.Now()
+		c.Next()
+		stopTime := time.Since(startTime)
+		spendTime := fmt.Sprintf("%d ms", int(math.Ceil(float64(stopTime.Nanoseconds()/1000000.0))))
+		hostName, err := os.Hostname()
+		if err != nil {
+			hostName = "unknown hostname"
+		}
+
+		statusCode := c.Writer.Status()
+		clientIp := c.ClientIP()
+		userAgent := c.Request.UserAgent()
+		dataSize := c.Writer.Size()
+		if dataSize < 0 {
+			dataSize = 0
+		}
+
+		method := c.Request.Method
+		path := c.Request.RequestURI
+
+		entry := log.WithFields(logrus.Fields{
+
+			"hostName":  hostName,
+			"status":    statusCode,
+			"spendTime": spendTime,
+			"ip":        clientIp,
+			"userAgent": userAgent,
+			"method":    method,
+			"path":      path,
+		})
+
+		if len(c.Errors) > 0 { //gin 框架 内部报错  记录gin 内部错误
+			entry.Error(c.Errors.ByType(gin.ErrorTypePrivate).String())
+		}
+
+		//HTTP response status HTTP 记录
+		if statusCode >= 500 {
+			entry.Error()
+		} else if statusCode >= 400 {
+			entry.Warn()
+		} else {
+			entry.Info()
+		}
+
 	}
 }
 

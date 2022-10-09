@@ -14,10 +14,10 @@ import (
 
 type User struct {
 	gorm.Model
-
+	//validate 数据验证
 	Username string `gorm:"type:varchar(20);not null " json:"username" validate:"required,min=4,max=12" label:"用户名"`
 	Password string `gorm:"type:varchar(500);not null" json:"password" validate:"required,min=6,max=120" label:"密码"`
-	Role     int    `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"角色码"`
+	Role     int    `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"角色码"` //gte=2 大于等于 2
 	Nickname string `gorm:"type:varchar(12)" json:"nickname" validate:"required,min=3,max=12" label:"昵称"`
 	SEX      string `gorm:"type:varchar(6)" json:"sex" validate:"required,min=1,max=6" label:"昵称"`
 	//Username string `gorm:"type:varchar(20);not null" json:"username"`
@@ -89,14 +89,15 @@ func (u *User) BeforeCreate(*gorm.DB) error {
 
 //查询用户列表
 
-func GetUserList(page int, pagesize int) []User {
+func GetUserList(page int, pagesize int) ([]User, int) {
 	var ulist []User
-	err := db.Limit(pagesize).Offset((page - 1) * pagesize).Find(&ulist).Error
+	var total int64
+	err := db.Limit(pagesize).Offset((page - 1) * pagesize).Find(&ulist).Count(&total).Error
 	if err != nil || err == gorm.ErrRecordNotFound { //查询错误 和没记录 都返回nil
-		return nil
+		return nil, 0
 	}
 
-	return ulist
+	return ulist, int(total)
 }
 
 func EditeNickname(nickname string, username string) (int, error) {

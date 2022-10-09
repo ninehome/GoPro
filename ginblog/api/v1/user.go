@@ -20,6 +20,7 @@ func AddUser(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&data)
 	if err != nil {
 		fmt.Println(err)
+		panic(err)
 		return
 	}
 
@@ -79,7 +80,7 @@ func GetUserList(ctx *gin.Context) {
 		page = 1
 	}
 
-	data := model.GetUserList(page, PageSize)
+	data, total := model.GetUserList(page, PageSize)
 	code := errormsg.SUCCESS
 
 	ctx.JSON(http.StatusOK, gin.H{
@@ -87,6 +88,7 @@ func GetUserList(ctx *gin.Context) {
 		"status":  code,
 		"data":    data,
 		"message": errormsg.GetErrorMsg(code),
+		"total":   total,
 	})
 }
 
