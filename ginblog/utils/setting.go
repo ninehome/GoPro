@@ -31,8 +31,8 @@ var er error
 // 初始化 读取配置
 func init() {
 	fmt.Println("读取ini配置文件：")
-	//starInit(load_WORK)
-	starInit(load_HOME)
+	starInit(load_WORK)
+	//starInit(load_HOME)
 }
 
 func starInit(plat string) {

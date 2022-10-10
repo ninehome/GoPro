@@ -1,4 +1,10 @@
-time="2022-10-09T21:19:19+08:00" level=info hostName=DESKTOP-BPPN2DN ip="::1" method=GET path="/api/v1/user/users?page=1&pagesize=3" spendTime="17 ms" status=200 userAgent=PostmanRuntime/7.29.2
-
-time="2022-10-09T14:29:25+08:00" level=info hostName=DESKTOP-BPPN2DN ip="::1" method=GET path="/api/v1/user/users?page=0&pagesize=10" spendTime="8 ms" status=200 userAgent=PostmanRuntime/7.29.2
-time="2022-10-09T14:29:26+08:00" level=info hostName=DESKTOP-BPPN2DN ip="::1" method=GET path="/api/v1/user/users?page=0&pagesize=10" spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:42:33+08:00" level=error hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/add spendTime="7 ms" status=500 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:42:59+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=GET path="/api/v1/user/nickname?nickname=%E5%8D%81%E9%87%8C%E5%B1%B1%E8%B7%AF%E4%B8%8D%E6%8D%A2%E8%82%A9&username=nine001" spendTime="8 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:44:50+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="2 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:45:02+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:45:20+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:45:21+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:45:45+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:46:05+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:46:06+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="0 ms" status=200 userAgent=PostmanRuntime/7.29.2
+time="2022-10-10T18:46:21+08:00" level=info hostName=DESKTOP-HBNL2UL ip="::1" method=POST path=/api/v1/user/login spendTime="2 ms" status=200 userAgent=PostmanRuntime/7.29.2
