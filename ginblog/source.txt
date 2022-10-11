@@ -1,0 +1,3 @@
+https://events.locallive.tv/schools/2677    //海外视频
+
+https://gitee.com/Gulu_Lv/video-download-tool?_from=gitee_search   //视频爬虫  去水印
