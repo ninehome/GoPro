@@ -1,0 +1,24 @@
+项目技术相关记录文档
+
+VUE3  本项目创建流程
+https://cn.vuejs.org/guide/quick-start.html#creating-a-vue-application
+
+
+1. 创建 vite项目
+> npm init vue@latest
+这一指令将会安装并执行 create-vue，它是 Vue 官方的项目脚手架工具
+2.运行编译项目
+在项目被创建后，通过以下步骤安装依赖并启动开发服务器：
+> cd <your-project-name>
+> npm install
+> npm run dev
+
+
+3.打包 发布
+当你准备将应用发布到生产环境时，请运行：  此命令会在 ./dist 文件夹中为你的应用创建一个生产环境的构建版本。关于将应用上线生产环境的更多内容，请阅读生产环境部署指南。
+> npm run build
+
+
+
+
+****************>>>>>>>>>>>**************
