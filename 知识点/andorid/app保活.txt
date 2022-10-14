@@ -1,0 +1,29 @@
+https://github.com/buptzlk/KeepAlivePro
+
+
+2022年最强安卓保活黑科技-支持Android4.0-Android13-app保活-安卓APP保活
+不同于一像素保活、双进程保活等弱鸡保活手段，该方案是修改frameword层实现的超强保活方案，支持全部Android4.0-Android13， 支持开机自启动，广播事件侦听拉活，二次拉活； 支持华为，oppo，vivo，小米，魅族，三星全机型，其他机型覆盖率98%以上。仅限技术交流使用，禁止非法使用。
+
+测试APK包
+https://qulian-apk.oss-cn-beijing.aliyuncs.com/apk/KeepAlivePro.apk
+
+微信（添加时请备注保活）
+kacppp
+
+
+AndroidKeepAlive
+目前可以实现Android 4-12保活，有以下特点
+
+拒绝应用强杀
+拒绝后台任务栏清理杀死
+拒绝清除缓存杀死
+开机自启动
+第一次安装立即静默自启动
+后台禁止休眠，拒绝进程冻结
+不依赖权限的后台弹框，成功率 90 %
+从Linux角度进行处理的保活方案，无需root
+使用条件 ：
+
+以上均不依赖任何Android权限
+以上支持oppo，vivo，华为，小米，原生等主流机型
+联系作者：miqtdev@163.com 微信：miqingtang
