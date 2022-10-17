@@ -1,0 +1,1 @@
+https://github.com/core-player/vue-core-video-player
