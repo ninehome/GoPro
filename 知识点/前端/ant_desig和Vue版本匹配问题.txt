@@ -1,0 +1,12 @@
+安装指定版本
+npm install ant-design-vue@2.1.2 --save
+npm install ant-design-vue@1.7.2 --save
+安装最新版本
+nmp install ant-design-vue@  --save
+
+
+配置
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
+
+cre
